@@ -8,7 +8,7 @@ export default function PostCard({post}: any) {
     // A card to wrap all elements
     <Link href={{
       pathname: `blog/${post.frontMatter.fileName}`
-    }}>
+    }}> 
     <div>
         <div>
             <h2>{post.frontMatter.title}</h2>
