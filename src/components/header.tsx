@@ -15,6 +15,12 @@ const Header = ({ titlePre = "" }) => {
 
   return (
     <header className="text-center  py-8">
+      <Head>
+				<title>Aditya's Portfolio</title>
+				<meta name="description" content="Aditya's Portfolio" />
+				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<link rel="icon" href="/images/profile.jpeg" />
+			</Head>
       <ul className="list-none p-0">
         {navItems.map(({ label, page, link }) => (
           <li key={label} className="inline-block px-10">

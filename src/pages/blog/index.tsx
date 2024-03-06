@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
-import PostCard from '../../components/PostCard';
+import PostCard from '../../components/post-card';
 
 export async function getStaticProps(){
 	
@@ -22,14 +22,15 @@ export async function getStaticProps(){
     }
 }
 
-const BlogPage =  (props: any) => {
-    const { posts } = props
-    return(
-        posts.map((p: any) => {
-        return <PostCard post={p} key={p.id} />
-        })
-    )
-}
-
+const BlogPage = ({ posts }: { posts: any[] }) => {
+    return (
+      <div className="p-4 md:p-8"> {/* Add padding */}
+        {posts.map((p: any) => (
+          <PostCard post={p} key={p.id} />
+        ))}
+      </div>
+    );
+  };
+  
 
 export default BlogPage
