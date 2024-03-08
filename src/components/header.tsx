@@ -24,7 +24,7 @@ const Header = ({ titlePre = "" }) => {
 			</Head>
       <ul className="list-none p-0">
         {navItems.map(({ label, page, link }) => (
-          <li key={label} className="inline-block px-10">
+          <li key={label} className="inline-block px-5">
             {page ? (
               <Link
                 href={page}
