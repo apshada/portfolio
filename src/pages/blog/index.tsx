@@ -2,55 +2,64 @@ import { query } from '../../lib/hashnode';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface Post {
-  coverImage: {
-    url: String;
+  coverImage?: { // Make coverImage optional to handle cases where it might be missing
+    url: string;
   };
-  id: String;
-  publishedAt: String;
-  slug: String;
-  title: String;
-  url: String; // Assuming you have a URL property for each post
+  id: string;
+  publishedAt: string;
+  slug: string;
+  title: string;
+  url: string; // Assuming you have a URL property for each post
 }
 
-const { data: { publication } } = await query({
-  query: `
-    query($host: String!) {
-      publication(host: $host) {
-        posts(first: 10) {
-          edges {
-            node {
-              coverImage {
+// Use async/await syntax for cleaner error handling
+async function getPosts(): Promise<Post[]> {
+  const { data: { publication } } = await query({
+    query: `
+      query($host: String!) {
+        publication(host: $host) {
+          posts(first: 10) {
+            edges {
+              node {
+                coverImage {
+                  url
+                }
+                id
+                publishedAt
+                slug
+                title
                 url
               }
-              id
-              publishedAt
-              slug
-              title
-              url
             }
           }
         }
       }
-    }
-  `,
-  variables: {
-    host: 'hada.hashnode.dev'
-  }
-});
+    `,
+    variables: {
+      host: 'hada.hashnode.dev',
+    },
+  });
+
+  return publication.posts.edges.map(({ node }: { node: Post }) => node).filter((post: Post) => post.coverImage?.url);
+}
 
 const BlogPage = () => {
   const router = useRouter();
-  const posts: Array<Post> = publication.posts.edges
-    .map(({ node }: { node: Post }) => node)
-    .filter((post: Post) => post.coverImage?.url);
+  // Call getPosts() inside the component to fetch data dynamically
+  const [posts, setPosts] = useState<Post[]>([]); // Use React useState for state management
+  useEffect(() => {
+    const fetchData = async () => {
+      const fetchedPosts = await getPosts();
+      setPosts(fetchedPosts);
+    };
+    fetchData();
+  }, []); // Empty dependency array to fetch data only once on component mount
 
   const handleCardClick = (url: string) => {
-    // Inform user about opening in a new tab (optional)
-    // if (confirm("This link will open in a new tab. Do you want to continue?")) {
-      window.open(url, '_blank'); // Open in new tab
-    // }
+    window.open(url, '_blank'); // Open in new tab
   };
 
   return (
@@ -68,7 +77,7 @@ const BlogPage = () => {
             <Image
               width={600}
               height={400}
-              src={post.coverImage?.url}
+              src={post.coverImage?.url ?? '/default-image.png'} // Set default image if coverImage is missing
               alt=""
               className="object-cover w-full h-48 md:h-64"
             />
