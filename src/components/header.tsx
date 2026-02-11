@@ -7,7 +7,7 @@ const navItems: { label: string; page?: string; link?: string }[] = [
   { label: "Home", page: "/" },
   { label: "Blog", page: "/blog" },
   { label: "About", page: "/about" },
-  { label: "Resume", link: "https://drive.google.com/file/d/19ZqBTuONFU65HJ5hQDyd_-dOrlKEYMOs/view?usp=sharing" },
+  { label: "Resume", page: "/resume" },
 ];
 
 
