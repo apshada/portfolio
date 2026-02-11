@@ -7,7 +7,7 @@ const navItems: { label: string; page?: string; link?: string }[] = [
   { label: "Home", page: "/" },
   { label: "Blog", page: "/blog" },
   { label: "About", page: "/about" },
-  { label: "Resume", page: "/resume" },
+  { label: "Resume", link: "/static/Aditya-Hada-Resume.pdf" },
 ];
 
 
